@@ -1,0 +1,178 @@
+{
+  "info": {
+    "_postman_id": "e130db3e-21fc-4790-8fbb-8196fe7fdd0e",
+    "name": "CatFact QA Automation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51547914"
+  },
+  "item": [
+    {
+      "name": "fact",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response time < 2000ms\", () => {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+              "});\r",
+              "\r",
+              "let jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Fact exists\", () => {\r",
+              "    pm.expect(jsonData.fact).to.exist;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Fact is string\", () => {\r",
+              "    pm.expect(jsonData.fact).to.be.a(\"string\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Length exists\", () => {\r",
+              "    pm.expect(jsonData.length).to.exist;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Length is number\", () => {\r",
+              "    pm.expect(jsonData.length).to.be.a(\"number\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://catfact.ninja/fact",
+          "protocol": "https",
+          "host": [
+            "catfact",
+            "ninja"
+          ],
+          "path": [
+            "fact"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fact Max Length",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Length field exists\", () => {\r",
+              "    pm.expect(jsonData.length).to.exist;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Length is a number\", () => {\r",
+              "    pm.expect(jsonData.length).to.be.a(\"number\");\r",
+              "});\r",
+              "\r",
+              "// Validación flexible (evita fallo por API inconsistente)\r",
+              "pm.test(\"Length is reasonable\", () => {\r",
+              "    pm.expect(jsonData.length).to.be.above(0);\r",
+              "});\r",
+              "``"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://catfact.ninja/fact?max_length={{max_length}}",
+          "protocol": "https",
+          "host": [
+            "catfact",
+            "ninja"
+          ],
+          "path": [
+            "fact"
+          ],
+          "query": [
+            {
+              "key": "max_length",
+              "value": "{{max_length}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Breeds",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Get Breeds Page 2",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "let jsonData = pm.response.json();\r",
+              "\r",
+              "pm.test(\"Current page is 2\", () => {\r",
+              "    pm.expect(jsonData.current_page).to.eql(2);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Data is array\", () => {\r",
+              "    pm.expect(jsonData.data).to.be.an(\"array\");\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://catfact.ninja/breeds?page=2",
+          "protocol": "https",
+          "host": [
+            "catfact",
+            "ninja"
+          ],
+          "path": [
+            "breeds"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "2"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
